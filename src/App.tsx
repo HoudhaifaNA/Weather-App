@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
+import { SWRConfig } from 'swr';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Theme from 'themes/Theme';
+import Header from 'components/Header/Header';
+import Home from 'pages/Home/Home';
+import { QueryConfig } from 'interfaces';
+
+const fetcher = (args: QueryConfig) => axios(args.url, { params: args.params });
+
+const App = () => (
+  <SWRConfig value={{ fetcher }}>
+    <Theme>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </Theme>
+  </SWRConfig>
+);
 
 export default App;
